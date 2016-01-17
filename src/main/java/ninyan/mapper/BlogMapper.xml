@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ninyan.mapper.BlogMapper">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+	<cache type="org.mybatis.caches.redis.RedisCache" />
+	<resultMap id="blogResultMap" type="Blog">
+		<id property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="owner" column="owner" />
+	</resultMap>
+	<!-- 新增记录 -->
+	<insert id="insertBlog" parameterType="Blog" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into t_blog(title,content,owner)
+		values(#{title},#{content},#{owner})
+	</insert>
+	<!-- 查询单条记录 -->
+	<select id="selectBlog" parameterType="int" resultType="Blog">
+		select *
+		from t_blog where id = #{id}
+	</select>
+	<!-- 修改记录 -->
+	<update id="updateBlog" parameterType="Blog">
+		update t_blog set title =
+		#{title},content = #{content},owner = #{owner}
+		where id = #{id}
+	</update>
+	<!-- 查询所有记录 -->
+	<select id="selectAll" resultMap="blogResultMap">
+		select * from t_blog
+	</select>
+	<!-- 删除记录 -->
+	<delete id="deleteBlog" parameterType="int">
+		delete from t_blog where
+		id = #{id}
+	</delete>
+
+</mapper>
